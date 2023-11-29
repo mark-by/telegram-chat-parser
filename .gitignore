@@ -1,0 +1,7 @@
+settings.py
+.DS_Store
+.idea/
+venv/
+__pycache__/
+session_name.session
+out.csv
