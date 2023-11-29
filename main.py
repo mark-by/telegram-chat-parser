@@ -36,17 +36,43 @@ def get_last_name(fio):
         return splitted[1]
     return None
 
+async def main(s):
+    s.clear()
+    curses.echo()
 
-async def main(stdscr):
-    s = stdscr
     client = TelegramClient('session_name', settings.API_ID, settings.API_HASH)
 
     await client.connect()
-    await client.start()
 
-    # s = curses.initscr()
+    def get_phone():
+        s.addstr(0, 0, 'Введите номер телефона:')
+        phone = s.getstr(0, 24, 20)
+        s.clear()
+        s.refresh()
+        return phone.decode('utf-8')
+
+    def get_password():
+        s.addstr(0, 0, 'Введите пароль:')
+        pswd = s.getstr(0, 16, 64)
+        s.clear()
+        s.refresh()
+        return pswd.decode('utf-8')
+
+    def get_code():
+        s.addstr(0, 0, 'Введите код, который прислал Telegram:')
+        code = s.getstr(0, 39, 20)
+        s.clear()
+        s.refresh()
+        return code.decode('utf-8')
+
+    await client.start(
+        phone=get_phone,
+        password=get_password,
+        code_callback=get_code,
+    )
+
     s.clear()
-    curses.echo()
+    s.refresh()
 
     s.addstr(0, 0, 'Введите ID чата:')
     try:
